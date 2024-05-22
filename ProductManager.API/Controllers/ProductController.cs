@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.Core.Models;
-using ProductManager.Core.Uteis;
 using ProductManager.Domain.Interfaces;
+using Serilog;
 
 namespace ProductManager.API.Controllers
 {
@@ -20,7 +20,7 @@ namespace ProductManager.API.Controllers
         [HttpGet("(id)")]
         public async Task<ActionResult<Product>> ObterProdutoPorIdAsync(int id)
         {
-            Log.Registrar("Obtendo produto por ID:", id);
+            Log.Information("Obtendo produto por ID:", id);
 
             var product = await _productService.ObterProdutoPorIdAsync(id);
 
