@@ -1,4 +1,5 @@
-using System;
+using Microsoft.EntityFrameworkCore;
+using ProductManager.Core.Models;
 using ProductManager.Domain.Interfaces;
 using ProductManager.Domain.Services;
 using ProductManager.Infra.Interfaces;
@@ -6,7 +7,6 @@ using ProductManager.Infra.Repository;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
-using Serilog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +31,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configurar o contexto do banco de dados
+builder.Services.AddDbContext<ProductContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    new MySqlServerVersion(new Version(8, 0, 21))));
+
+// Registrar os serviços e repositórios
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 

@@ -1,0 +1,24 @@
+{"@t":"2024-05-22T21:07:53.8719300Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:08:04.9277293Z","@mt":"Erro ao obter produto por ID: Access denied for user 'root'@'localhost' (using password: YES)","@l":"Error"}
+{"@t":"2024-05-22T21:08:53.2123603Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:08:55.1794540Z","@mt":"Erro ao obter produto por ID: Access denied for user 'root'@'localhost' (using password: YES)","@l":"Error"}
+{"@t":"2024-05-22T21:09:48.4086256Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:13:05.4874330Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:13:20.5179949Z","@mt":"Erro ao obter produto por ID: Access denied for user 'root'@'localhost' (using password: YES)","@l":"Error"}
+{"@t":"2024-05-22T21:15:08.9368079Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:17:12.3059027Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:17:59.9871812Z","@mt":"Erro ao obter produto por ID: Unknown database 'webapi'","@l":"Error"}
+{"@t":"2024-05-22T21:19:09.0556417Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:21:39.7278370Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:23:21.9272552Z","@mt":"Erro ao obter produto por ID: Unknown database 'webapi'","@l":"Error"}
+{"@t":"2024-05-22T21:24:33.4913769Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:24:50.2183828Z","@mt":"Produto com ID 1 não encontrado.","@l":"Warning"}
+{"@t":"2024-05-22T21:32:49.9151737Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T21:33:04.3053520Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T22:48:15.3754471Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T22:49:10.0294236Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T22:50:15.2572695Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T22:50:20.4864983Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T22:50:25.6398195Z","@mt":"Obtendo produto por ID:"}
+{"@t":"2024-05-22T22:50:25.6494223Z","@mt":"Produto com ID 10 não encontrado.","@l":"Warning"}
+{"@t":"2024-05-22T22:51:35.1423961Z","@mt":"Obtendo produto por ID:"}
