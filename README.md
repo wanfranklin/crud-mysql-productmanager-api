@@ -8,7 +8,7 @@ Este é um projeto EM EVOLUÇÃO que demonstra operações CRUD (Create, Read, U
 
 ## Configuração
 
-Certifique-se de ter o .NET 6 SDK e o MySQL instalados na sua máquina.
+Certifique-se de ter o .NET 8 SDK e o MySQL instalados na sua máquina.
 
 ### Execução do projeto
 
