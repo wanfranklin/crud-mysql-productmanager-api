@@ -31,5 +31,22 @@ namespace ProductManager.API.Controllers
 
             return Ok(product);
         }
+
+        [HttpPut("(id)")]
+        public async Task<ActionResult> AtualizarProdutoPorIdAsync(int id, Product product)
+        {
+            Log.Information("Atualizando produto por ID:", id);
+
+            if (id != product.Id)
+            {
+                return BadRequest();
+            }
+
+            await _productService.AtualizarProdutoAsync(product);
+
+            Console.WriteLine("Dado atualizado com sucesso.");
+
+            return Content("Dado atualizado com sucesso.");
+        }
     }
 }

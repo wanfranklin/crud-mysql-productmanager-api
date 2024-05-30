@@ -24,7 +24,9 @@ namespace ProductManager.Infra.Repository
                 {
                     existeProduto.Nome = product.Nome;
                     existeProduto.Preco = product.Preco;
+
                     await _context.SaveChangesAsync();
+                    
                     return existeProduto;
                 }
                 else
@@ -108,8 +110,6 @@ namespace ProductManager.Infra.Repository
                 throw;
             }
         }
-
-        // Exemplos adicionais
         public async Task<IEnumerable<Product>> ObterProdutosPorNomeAsync(string nome)
         {
             try
