@@ -56,7 +56,7 @@ namespace ProductManager.Infra.Repository
             }
         }
 
-        public async Task DeletarProdutosAsync(int id)
+        public async Task DeletarProdutoPorIdAsync(int id)
         {
             try
             {
@@ -110,6 +110,7 @@ namespace ProductManager.Infra.Repository
                 throw;
             }
         }
+
         public async Task<IEnumerable<Product>> ObterProdutosPorNomeAsync(string nome)
         {
             try

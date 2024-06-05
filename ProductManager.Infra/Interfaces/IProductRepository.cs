@@ -8,6 +8,6 @@ namespace ProductManager.Infra.Interfaces
         Task<Product> ObterProdutoPorIdAsync(int id);
         Task<Product> CriarProdutoAsync(Product product);
         Task<Product> AtualizarProdutoAsync(Product product);
-        Task DeletarProdutosAsync(int id);
+        Task DeletarProdutoPorIdAsync(int id);
     }
 }
