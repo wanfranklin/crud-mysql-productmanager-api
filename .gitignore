@@ -81,3 +81,14 @@
 /ProductManager.Domain/obj
 /ProductManager.Infra/bin/Debug/net6.0
 /ProductManager.Infra/obj
+/ProductManager.API/bin/Debug/net8.0/ProductManager.API.exe
+/ProductManager.API/bin/Debug/net8.0/ProductManager.API.pdb
+/ProductManager.API/bin/Debug/net8.0/ProductManager.Core.pdb
+/ProductManager.API/bin/Debug/net8.0/ProductManager.Domain.pdb
+/ProductManager.API/bin/Debug/net8.0/ProductManager.Infra.pdb
+/ProductManager.Infra/bin/Debug/net8.0/ProductManager.Core.pdb
+/ProductManager.Infra/bin/Debug/net8.0/ProductManager.Infra.pdb
+/ProductManager.Domain/bin/Debug/net8.0/ProductManager.Core.pdb
+/ProductManager.Domain/bin/Debug/net8.0/ProductManager.Domain.pdb
+/ProductManager.Domain/bin/Debug/net8.0/ProductManager.Infra.pdb
+/ProductManager.Core/bin/Debug/net8.0/ProductManager.Core.pdb
