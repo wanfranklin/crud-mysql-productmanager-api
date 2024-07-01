@@ -23,9 +23,9 @@ namespace ProductManager.Domain.Services
             return await _productRepository.CriarProdutoAsync(product);
         }
 
-        public async Task DeletarProdutosAsync(int id)
+        public async Task DeletarProdutoPorIdAsync(int id)
         {
-            await _productRepository.DeletarProdutosAsync(id);
+            await _productRepository.DeletarProdutoPorIdAsync(id);
         }
 
         public async Task<Product> ObterProdutoPorIdAsync(int id)

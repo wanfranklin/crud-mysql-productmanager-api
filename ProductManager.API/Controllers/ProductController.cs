@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Bcpg.Sig;
 using ProductManager.Core.Models;
 using ProductManager.Domain.Interfaces;
 using Serilog;
@@ -47,6 +48,21 @@ namespace ProductManager.API.Controllers
             Console.WriteLine("Dado atualizado com sucesso.");
 
             return Content("Dado atualizado com sucesso.");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CriarProdutoAsync(Product product)
+        {
+            await _productService.CriarProdutoAsync(product);
+            return Content("Sucesso.");
+        }
+
+        [HttpDelete("(id)")]
+        public async Task<ActionResult> DeletarProdutoPorId(int id)
+        {
+            Log.Information("Deletando produto por ID:", id);
+            await _productService.DeletarProdutoPorIdAsync(id);
+            return Content("Sucesso.");
         }
     }
 }
