@@ -11,6 +11,7 @@ CREATE TABLE Products (
 INSERT INTO Products (Nome, Preco) VALUES
 ('Produto 1', 5.00),
 ('Produto 2', 6.00);
+('Produto 3', 7.00);
 
 SELECT * FROM Products;
 
