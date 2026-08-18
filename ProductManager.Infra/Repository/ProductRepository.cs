@@ -17,134 +17,78 @@ namespace ProductManager.Infra.Repository
 
         public async Task<Product> AtualizarProdutoAsync(Product product)
         {
-            try
+            var existeProduto = await _context.Products.FindAsync(product.Id);
+
+            if (existeProduto == null)
             {
-                var existeProduto = await _context.Products.FindAsync(product.Id);
-
-                if (existeProduto == null)
-                {
-                    throw new KeyNotFoundException($"Produto com ID {product.Id} não encontrado.");
-                }
-
-                existeProduto.Nome = product.Nome;
-                existeProduto.Preco = product.Preco;
-
-                await _context.SaveChangesAsync();
-
-                return existeProduto;
+                throw new KeyNotFoundException($"Produto com ID {product.Id} não encontrado.");
             }
-            catch (KeyNotFoundException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao atualizar produto");
-                throw;
-            }
+
+            existeProduto.Nome = product.Nome;
+            existeProduto.Preco = product.Preco;
+
+            await _context.SaveChangesAsync();
+
+            return existeProduto;
         }
 
         public async Task<Product> CriarProdutoAsync(Product product)
         {
-            try
-            {
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-                return product;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao criar produto");
-                throw;
-            }
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+            return product;
         }
 
         public async Task DeletarProdutoPorIdAsync(int id)
         {
-            try
-            {
-                var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-                if (product == null)
-                {
-                    throw new KeyNotFoundException($"Produto com ID {id} não encontrado.");
-                }
+            if (product == null)
+            {
+                throw new KeyNotFoundException($"Produto com ID {id} não encontrado.");
+            }
 
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
-            catch (KeyNotFoundException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao deletar produto");
-                throw;
-            }
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Product> ObterProdutoPorIdAsync(int id)
         {
-            try
-            {
-                var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-                if (product == null)
-                {
-                    Log.Warning("Produto com ID {Id} não encontrado.", id);
-                }
-
-                return product!;
-            }
-            catch (Exception ex)
+            if (product == null)
             {
-                Log.Error(ex, "Erro ao obter produto por ID");
-                throw;
+                throw new KeyNotFoundException($"Produto com ID {id} não encontrado.");
             }
+
+            return product;
         }
 
-        public async Task<IEnumerable<Product>> ObterProdutosAsync()
+        public async Task<PagedResult<Product>> ObterProdutosAsync(int page, int pageSize)
         {
-            try
-            {
-                return await _context.Products.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao obter produtos");
-                throw;
-            }
+            var totalCount = await _context.Products.CountAsync();
+
+            var items = await _context.Products
+                .OrderBy(p => p.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return PagedResult<Product>.Create(items, totalCount, page, pageSize);
         }
 
         public async Task<IEnumerable<Product>> ObterProdutosPorNomeAsync(string nome)
         {
-            try
-            {
-                return await _context.Products
-                    .Where(p => p.Nome != null && p.Nome.Contains(nome))
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao obter produtos por nome");
-                throw;
-            }
+            return await _context.Products
+                .Where(p => p.Nome != null && p.Nome.Contains(nome))
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> ObterProdutosPorPrecoAsync(decimal precoMin, decimal precoMax)
         {
-            try
-            {
-                return await _context.Products
-                    .Where(p => p.Preco >= precoMin && p.Preco <= precoMax)
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao obter produtos por preço");
-                throw;
-            }
+            return await _context.Products
+                .Where(p => p.Preco >= precoMin && p.Preco <= precoMax)
+                .ToListAsync();
         }
     }
 }

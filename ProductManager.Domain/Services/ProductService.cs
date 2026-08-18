@@ -8,7 +8,7 @@ namespace ProductManager.Domain.Services
     {
         private readonly IProductRepository _productRepository;
 
-        public ProductService(IProductRepository productRepository) 
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
@@ -33,9 +33,9 @@ namespace ProductManager.Domain.Services
             return await _productRepository.ObterProdutoPorIdAsync(id);
         }
 
-        public async Task<IEnumerable<Product>> ObterProdutosAsync()
+        public async Task<PagedResult<Product>> ObterProdutosAsync(int page, int pageSize)
         {
-            return await _productRepository.ObterProdutosAsync();
+            return await _productRepository.ObterProdutosAsync(page, pageSize);
         }
     }
 }

@@ -4,14 +4,13 @@ API REST para gerenciamento de produtos com operações CRUD, construída com AS
 
 ## Funcionalidades
 
-- **Listar produtos** - Retorna todos os produtos cadastrados
+- **Listar produtos** - Retorna produtos paginados com metadados de paginação
 - **Buscar produto por ID** - Retorna um produto específico pelo ID
-- **Criar produto** - Adiciona um novo produto (retorna 201)
+- **Criar produto** - Adiciona um novo produto com validação (retorna 201)
 - **Atualizar produto** - Atualiza um produto existente
 - **Deletar produto** - Remove um produto pelo ID
-- **Buscar por nome** - Filtra produtos pelo nome
-- **Buscar por faixa de preço** - Filtra produtos por preço mínimo e máximo
 - **Documentação Swagger** - Interface interativa para testar a API
+- **Tratamento centralizado de erros** - Respostas padronizadas para todos os tipos de erro
 
 ## Pré-requisitos
 
@@ -38,11 +37,13 @@ cd crud-mysql-productmanager-api
 }
 ```
 
-3. Execute o script SQL para criar o banco e a tabela:
+3. Execute o script SQL para criar o banco e popular com dados de teste:
 
 ```bash
 mysql -u root -p < SQL_Code/ProductManagerDB.sql
 ```
+
+> O script cria 20 produtos de exemplo nas categorias: Eletrônicos, Acessórios, Papelaria, Alimentos, Casa e Esportes.
 
 4. Execute o projeto:
 
@@ -60,10 +61,26 @@ dotnet run --project ProductManager.API
 O projeto segue uma arquitetura em camadas (Clean Architecture):
 
 ```
-ProductManager.API/          → Camada de apresentação (controllers, configuração)
+ProductManager.API/          → Camada de apresentação (controllers, DTOs, middleware)
+├── Controllers/             → Endpoints da API
+├── Dtos/                    → Modelos de transferência de dados
+├── Middleware/              → Tratamento centralizado de erros
+└── Program.cs               → Configuração e inicialização
+
 ProductManager.Domain/       → Camada de negócio (services, interfaces)
-ProductManager.Core/         → Modelos compartilhados (entidades)
-ProductManager.Infra/        → Acesso a dados (repository, DbContext)
+├── Interfaces/              → Contratos dos services
+├── Services/                → Implementação da lógica de negócio
+└── Extensions/              → Módulos de DI
+
+ProductManager.Core/         → Modelos compartilhados
+└── Models/                  → Entidades e modelos de paginação
+
+ProductManager.Infra/        → Acesso a dados
+├── Interfaces/              → Contratos dos repositories
+├── Repository/              → Implementação com EF Core
+├── Models/                  → DbContext e configurações
+└── Extensions/              → Módulos de DI
+
 SQL_Code/                    → Scripts de inicialização do banco
 ```
 
@@ -77,11 +94,54 @@ API → Domain → Infra → Core
 
 | Método | Rota                | Descrição                        | Body                                          |
 |--------|---------------------|----------------------------------|-----------------------------------------------|
-| `GET`    | `/Product`            | Lista todos os produtos          | -                                             |
+| `GET`    | `/Product`            | Lista produtos paginados         | Query: `page`, `pageSize`                     |
 | `GET`    | `/Product/{id}`       | Retorna um produto pelo ID       | -                                             |
 | `POST`   | `/Product`            | Cria um novo produto             | `{ "nome": "string", "preco": 10.00 }`        |
-| `PUT`    | `/Product/{id}`       | Atualiza um produto              | `{ "id": 1, "nome": "string", "preco": 10.00 }` |
+| `PUT`    | `/Product/{id}`       | Atualiza um produto              | `{ "nome": "string", "preco": 10.00 }`        |
 | `DELETE` | `/Product/{id}`       | Deleta um produto pelo ID        | -                                             |
+
+### Exemplo de resposta paginada
+
+```json
+{
+  "items": [
+    { "id": 1, "nome": "Notebook Dell Inspiron 15", "preco": 4599.90 },
+    { "id": 2, "nome": "Mouse Logitech MX Master 3S", "preco": 349.90 }
+  ],
+  "totalCount": 20,
+  "totalPages": 2,
+  "currentPage": 1,
+  "pageSize": 10
+}
+```
+
+### Formato de erro padronizado
+
+```json
+{
+  "statusCode": 404,
+  "message": "Produto com ID 99 não encontrado.",
+  "timestamp": "2026-08-18T12:00:00Z"
+}
+```
+
+## Conceitos Apresentados
+
+Esta API é ideal para estudantes aprenderem os seguintes conceitos:
+
+| Conceito | Onde aplicado |
+|----------|---------------|
+| **Clean Architecture** | Separação em camadas (API, Domain, Infra, Core) |
+| **DTOs** | `ProductManager.API/Dtos/` - separação entre modelo de banco e API |
+| **Padrão Repository** | `ProductManager.Infra/Repository/` |
+| **Padrão Service** | `ProductManager.Domain/Services/` |
+| **Injeção de Dependência** | Módulos de extensão em cada camada |
+| **Paginação** | `PagedResult<T>` + query params no endpoint |
+| **Tratamento de Erros** | `ExceptionMiddleware` com respostas padronizadas |
+| **Validação de Dados** | Data Annotations no modelo e DTOs |
+| **Entity Framework Core** | Mapeamento ORM, seed com `HasData` |
+| **Serilog** | Logging estruturado em arquivo e console |
+| **Swagger/OpenAPI** | Documentação interativa da API |
 
 ## Tecnologias
 

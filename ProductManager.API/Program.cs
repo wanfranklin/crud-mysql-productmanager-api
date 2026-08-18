@@ -1,3 +1,4 @@
+using ProductManager.API.Middleware;
 using ProductManager.Domain.Extensions;
 using ProductManager.Infra.Extensions;
 using Serilog;
@@ -24,6 +25,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddDomain();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
