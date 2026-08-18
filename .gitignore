@@ -92,3 +92,7 @@
 /ProductManager.Domain/bin/Debug/net8.0/ProductManager.Domain.pdb
 /ProductManager.Domain/bin/Debug/net8.0/ProductManager.Infra.pdb
 /ProductManager.Core/bin/Debug/net8.0/ProductManager.Core.pdb
+
+# Build output
+bin/
+obj/

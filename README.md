@@ -15,8 +15,49 @@ API REST para gerenciamento de produtos com operações CRUD, construída com AS
 ## Pré-requisitos
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [MySQL 8.0+](https://dev.mysql.com/downloads/mysql/)
+- Banco de dados MySQL/MariaDB (ver opções abaixo)
 - Editor de código (VS Code, Visual Studio, etc.)
+
+### Opções de Banco de Dados
+
+#### Opção 1: XAMPP (Recomendado para iniciantes)
+
+[XAMPP](https://www.apachefriends.org/) inclui MySQL, PHPMyAdmin e Apache prontos para uso.
+
+1. Baixe e instale o [XAMPP](https://www.apachefriends.org/download.html)
+2. Abra o Painel do XAMPP e inicie o **MySQL** (clique em "Start" ao lado de MySQL)
+3. O MySQL estará rodando na porta padrão `3306`
+4. Acesse o PHPMyAdmin em `http://localhost/phpmyadmin` para verificar se está funcionando
+
+#### Opção 2: MySQL Standalone
+
+Baixe e instale o [MySQL Server 8.0+](https://dev.mysql.com/downloads/mysql/) diretamente.
+
+#### Opção 3: MariaDB
+
+[MariaDB](https://mariadb.org/download/) é um fork do MySQL 100% compatível:
+
+```bash
+# macOS (Homebrew)
+brew install mariadb
+brew services start mariadb
+
+# Ubuntu/Debian
+sudo apt install mariadb-server
+sudo systemctl start mariadb
+
+# Windows - baixe o instalador em mariadb.org
+```
+
+#### Opção 4: Docker
+
+```bash
+docker run --name productmanager-mysql \
+  -e MYSQL_ROOT_PASSWORD=123456 \
+  -e MYSQL_DATABASE=ProductManagerDB \
+  -p 3306:3306 \
+  -d mysql:8.0
+```
 
 ## Configuração
 
@@ -32,18 +73,38 @@ cd crud-mysql-productmanager-api
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=ProductManagerDB;User=root;Password=sua_senha"
+    "DefaultConnection": "Server=localhost;Database=ProductManagerDB;User=root;Password=sua_senha;"
   }
 }
 ```
 
+**Exemplos por tipo de banco:**
+
+| Banco | Connection String |
+|-------|-------------------|
+| **XAMPP** (senha vazia) | `Server=localhost;Database=ProductManagerDB;User=root;Password=;` |
+| **XAMPP** (senha definida) | `Server=localhost;Database=ProductManagerDB;User=root;Password=sua_senha;` |
+| **MySQL Standalone** | `Server=localhost;Database=ProductManagerDB;User=root;Password=sua_senha;` |
+| **MariaDB** | `Server=localhost;Database=ProductManagerDB;User=root;Password=sua_senha;` |
+| **Docker** | `Server=localhost;Database=ProductManagerDB;User=root;Password=123456;` |
+| **MySQL remoto** | `Server=192.168.1.100;Database=ProductManagerDB;User=meuuser;Password=1234;` |
+
+> **Nota para XAMPP:** Por padrão o MySQL do XAMPP vem com usuário `root` e **senha vazia**. Se você definiu uma senha no phpMyAdmin, use-a na string de conexão.
+
 3. Execute o script SQL para criar o banco e popular com dados de teste:
 
 ```bash
+# Via linha de comando
 mysql -u root -p < SQL_Code/ProductManagerDB.sql
+
+# Ou via phpMyAdmin (XAMPP):
+# 1. Acesse http://localhost/phpmyadmin
+# 2. Clique na aba "SQL"
+# 3. Cole o conteúdo do arquivo SQL_Code/ProductManagerDB.sql
+# 4. Clique em "Executar"
 ```
 
-> O script cria 20 produtos de exemplo nas categorias: Eletrônicos, Acessórios, Papelaria, Alimentos, Casa e Esportes.
+> O script cria o banco `ProductManagerDB`, a tabela `Products` e insere 20 produtos de exemplo.
 
 4. Execute o projeto:
 
@@ -149,11 +210,21 @@ Esta API é ideal para estudantes aprenderem os seguintes conceitos:
 |------------------------|---------|------------------------------------|
 | .NET                   | 10.0    | Framework de execução              |
 | ASP.NET Core           | 10.0    | Framework web                      |
-| Entity Framework Core  | 10.0    | ORM para acesso a dados            |
-| Pomelo MySQL           | 9.0     | Provider EF Core para MySQL        |
+| Entity Framework Core  | 9.0     | ORM para acesso a dados            |
+| Pomelo MySQL           | 9.0     | Provider EF Core para MySQL/MariaDB |
 | Serilog                | 4.4     | Logging estruturado                |
 | Swashbuckle            | 10.2    | Documentação Swagger/OpenAPI       |
-| MySQL                  | 8.0+    | Banco de dados relacional          |
+| MySQL/MariaDB          | 8.0+    | Banco de dados relacional          |
+
+## Rodando os Testes
+
+```bash
+dotnet test
+```
+
+- **36 testes** (unitários + integração)
+- Usa InMemory Database (não precisa de MySQL para testar)
+- Cobertura: Services, Controllers, Middleware, Paginação, CRUD
 
 ## Licença
 

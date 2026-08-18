@@ -83,10 +83,7 @@ namespace ProductManager.API.Controllers
                 Preco = created.Preco
             };
 
-            return CreatedAtAction(
-                nameof(ObterProdutoPorIdAsync),
-                new { id = response.Id },
-                response);
+            return Created($"/Product/{response.Id}", response);
         }
 
         [HttpPut("{id}")]
