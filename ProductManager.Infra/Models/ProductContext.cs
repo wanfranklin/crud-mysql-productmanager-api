@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using ProductManager.Core.Models;
 
-namespace ProductManager.Core.Models
+namespace ProductManager.Infra.Models
 {
     public class ProductContext : DbContext
     {

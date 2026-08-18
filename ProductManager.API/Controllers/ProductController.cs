@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Bcpg.Sig;
 using ProductManager.Core.Models;
 using ProductManager.Domain.Interfaces;
 using Serilog;
@@ -18,25 +17,25 @@ namespace ProductManager.API.Controllers
             _productService = productService;
         }
 
-        [HttpGet("(id)")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Product>> ObterProdutoPorIdAsync(int id)
         {
-            Log.Information("Obtendo produto por ID:", id);
+            Log.Information("Obtendo produto por ID: {Id}", id);
 
             var product = await _productService.ObterProdutoPorIdAsync(id);
 
             if (product == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return Ok(product);
         }
 
-        [HttpPut("(id)")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> AtualizarProdutoPorIdAsync(int id, Product product)
         {
-            Log.Information("Atualizando produto por ID:", id);
+            Log.Information("Atualizando produto por ID: {Id}", id);
 
             if (id != product.Id)
             {
@@ -45,24 +44,35 @@ namespace ProductManager.API.Controllers
 
             await _productService.AtualizarProdutoAsync(product);
 
-            Console.WriteLine("Dado atualizado com sucesso.");
-
-            return Content("Dado atualizado com sucesso.");
+            return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult> CriarProdutoAsync(Product product)
+        public async Task<ActionResult<Product>> CriarProdutoAsync(Product product)
         {
-            await _productService.CriarProdutoAsync(product);
-            return Content("Sucesso.");
+            var created = await _productService.CriarProdutoAsync(product);
+
+            return CreatedAtAction(
+                nameof(ObterProdutoPorIdAsync),
+                new { id = created.Id },
+                created);
         }
 
-        [HttpDelete("(id)")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeletarProdutoPorId(int id)
         {
-            Log.Information("Deletando produto por ID:", id);
+            Log.Information("Deletando produto por ID: {Id}", id);
+
+            var product = await _productService.ObterProdutoPorIdAsync(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
             await _productService.DeletarProdutoPorIdAsync(id);
-            return Content("Sucesso.");
+
+            return NoContent();
         }
     }
 }

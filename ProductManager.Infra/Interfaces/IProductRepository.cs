@@ -9,5 +9,7 @@ namespace ProductManager.Infra.Interfaces
         Task<Product> CriarProdutoAsync(Product product);
         Task<Product> AtualizarProdutoAsync(Product product);
         Task DeletarProdutoPorIdAsync(int id);
+        Task<IEnumerable<Product>> ObterProdutosPorNomeAsync(string nome);
+        Task<IEnumerable<Product>> ObterProdutosPorPrecoAsync(decimal precoMin, decimal precoMax);
     }
 }
